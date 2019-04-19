@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1>打开控制台可查看日志（需要浏览器支持WebSocket）</h1>
+    <h2>
+        使用方式：用post发送  <br>
+       <code>
+           { <br>
+               "type": "log",  // log,error,warn <br>
+               "msg": "message",  <br>
+               "time": "2019-04-19 16:55",  <br>
+               "label": "你的标签"  <br>
+           } <br>
+       </code>
+        到http://<%= ip %>:10001/log/send
+        <br>
+        可以在控制台看到实时的输出
+    </h2>
+  </body>
+  <script>
+    const ws = new WebSocket("ws://<%= ip %>:10002");
+    ws.onopen = function() {};
+    ws.onclose = function() {};
+    ws.onmessage = function (evt)
+    {
+      const data = JSON.parse(evt.data);
+      if (data.type === "log") {
+        console.log(data.label, data.time, data.msg);
+      } else if (data.type === "warn") {
+        console.warn(data.label, data.time, data.msg);
+      } else if (data.type === "error") {
+        console.error(data.label, data.time, data.msg);
+      }
+    };
+  </script>
+</html>
