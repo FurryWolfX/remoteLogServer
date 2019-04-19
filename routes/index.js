@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const getIpArray = require("../utils/ip");
+const IP = require("../utils/ip");
 const wsServer = require("../utils/wsServer");
 
 router.get("/", function(req, res, next) {
-  res.render("index", { title: "远程log调试服务", ip: getIpArray()[0] });
+  res.render("index", { title: "远程log调试服务", ip: IP });
 });
 
 router.post("/log/send", function(req, res, next) {
